@@ -1,5 +1,5 @@
-from selenium import webdriver
 import streamlit as st
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -12,6 +12,10 @@ import time
 def get_search_results(keyword):
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')  # Run in headless mode
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    
+    # Install and use ChromeDriver
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
     
     results = []
@@ -59,7 +63,7 @@ def write_to_excel(results, filename):
     
     wb.save(filename)
 
-st.title("PDF Scraper from all govt website")
+st.title("PDF Scraper from all govt websites")
 st.write("Enter the Keyword you want to search and get PDF URLs and title in an Excel file.")
 
 keyword = st.text_input("Keyword", "National Education Policy ")
@@ -72,4 +76,3 @@ if st.button("Get PDF Links"):
         st.success(f"Links added to {file_name} successfully.")
         st.download_button(label="Download Excel file", data=open(file_name, "rb").read(), file_name=f"{file_name}.xlsx")
 st.markdown("[Github](https://github.com/Ansumanbhujabal) | [LinkedIn](https://www.linkedin.com/in/ansuman-simanta-sekhar-bhujabala-30851922b/) | © 2024 Ansuman Bhujabala")
-
